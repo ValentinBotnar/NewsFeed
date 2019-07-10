@@ -1,6 +1,21 @@
-<ul *ngFor="let p of newsList">
+<router-outlet><h1>List of News</h1>
+<ul *ngFor="let p of allNews">
   <li>
-    <p>{{p?.header}}</p>
+    <h3>Header:</h3>
+    <a (click)="onClick($event)" routerLink="/oneNews" id="{{p?.id}}">{{p?.header}}</a>
+    <h4>Text:</h4>
     <p>{{p?.text}}</p>
   </li>
+  <p>_________________________________________________________________________________________________________________________________________________</p>
 </ul>
+<ul *ngFor="let p of newsList">
+  <li>
+    <h3>Header:</h3>
+    <a (click)="onClick($event)" routerLink="/oneNews" id="{{p?.id}}">{{p?.header}}</a>
+    <h4>Text:</h4>
+    <p>{{p?.text}}</p>
+    <p>_________________________________________________________________________________________________________________________________________________</p>
+  </li>
+</ul>
+  </router-outlet>
+<router-outlet></router-outlet>

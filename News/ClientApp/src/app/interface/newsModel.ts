@@ -1,6 +1,5 @@
 
 export class NewsModel {
-    [x: string]: any;
   id: number;
   header: string;
   text: string;

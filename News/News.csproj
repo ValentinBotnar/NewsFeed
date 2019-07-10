@@ -27,11 +27,13 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\newsModel.ts" />
+    <None Remove="ClientApp\src\app\oneNewsPage\oneNewsPage.component.ts" />
     <None Remove="ClientApp\src\app\SignalRService.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\interface\newsModel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\oneNewsPage\oneNewsPage.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\signalr\SignalRService.ts" />
   </ItemGroup>
 

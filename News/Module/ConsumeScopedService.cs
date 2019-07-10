@@ -14,10 +14,18 @@ namespace ControlNotifications.Hub
     public class ConsumeScopedService : Microsoft.AspNetCore.SignalR.Hub, IHostedService, IDisposable
     {
         private readonly IHubContext<ConsumeScopedService> _hubContext;
+        public Notification[] arrayOfAllNews;
         public ConsumeScopedService(IServiceProvider services, IHubContext<ConsumeScopedService> hubContext)
         {
             Services = services;
             _hubContext = hubContext;
+
+            using (var scope = Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+                var list = context.Notifications;
+                _hubContext.Clients.All.SendAsync("ReceiveMessageAllNews", list);
+            }
         }
 
         private Timer _timer;
@@ -26,7 +34,7 @@ namespace ControlNotifications.Hub
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(7));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(40));
             return Task.CompletedTask;
         }
 
@@ -36,12 +44,11 @@ namespace ControlNotifications.Hub
             {
                 Random random = new Random();
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-                var message = "ConsumeScopedService. Received message at " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss");
-                //q.Add()
+
                 Notification notice = new Notification() { Id = random.Next(), IsRead = false, Header = Notification.HeaderRandom(random, 10), Text = Notification.TextRandom(random, 100) };
                 context.Notifications.Add(notice);
                 context.SaveChanges();
-                await _hubContext.Clients.All.SendAsync("ReceiveMessage", notice.Id, notice.Header, notice.Text);/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                await _hubContext.Clients.All.SendAsync("ReceiveMessage", notice.Id, notice.Header, notice.Text);
             }
         }
 
