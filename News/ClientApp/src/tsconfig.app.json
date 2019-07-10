@@ -4,6 +4,8 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
+    "experimentalDecorators": true,
+    "allowJs": true,
     "types": []
   },
   "exclude": [

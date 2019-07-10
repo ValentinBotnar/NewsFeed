@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 
 export class AppComponent implements OnInit {
   title = 'app';
-  public newsList: NewsModel[] = [];
   allNews: NewsModel[] = [];
   public hubConnection: signalR.HubConnection;
   @Output() idLinkNews = new EventEmitter();
@@ -31,8 +30,7 @@ export class AppComponent implements OnInit {
     });
     
     this.hubConnection.on("ReceiveMessage", (id, header, text) => {
-
-      this.newsList.push(new NewsModel(id, header, text));
+      this.allNews.push(new NewsModel(id, header, text));
     });
     
     this.hubConnection.start();
