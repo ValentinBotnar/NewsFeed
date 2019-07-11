@@ -12,21 +12,20 @@ import { DataService } from '../data.service';
 
 export class OneNewsPageComponent implements OnInit {
  
- // @Input() appChildMessage: string;
   private idNewsLocal: string;
-  ngOnInit() {  
-    this.data.count.subscribe(c => {
-      this.count = Number(localStorage.getItem(this.idNewsLocal));
-      localStorage.setItem(this.idNewsLocal, c.toString());
-      console.log("bvbvbvbvbvbvbvbvbv   " + localStorage.getItem(this.idNewsLocal));
-    });
+  ngOnInit() {
+      //get data of one selected news from local storage
+      this.oneNews = JSON.parse(localStorage.getItem(this.idNewsLocal));
+
+      this.oneNewsId = this.oneNews.id;
+      this.oneNewsHeader = this.oneNews.header;
+      this.oneNewsText = this.oneNews.text;
   }
+
   oneNews: NewsModel;
-  count: number;
+  oneNewsId: number;
+  oneNewsHeader: string;
+  oneNewsText: string;
+
   constructor(private data: DataService) { }
 }
-
-//ngOnInit() {
-//  this.data.currentNews.subscribe(news => this.oneNews = news)
-//}
-//oneNews: NewsModel;

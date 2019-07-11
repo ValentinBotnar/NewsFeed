@@ -20,7 +20,7 @@ import { DataService } from './data.service';
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
+    NavMenuComponent, 
     HomeComponent,
     FetchDataComponent,
     OneNewsPageComponent,
@@ -32,7 +32,7 @@ import { DataService } from './data.service';
     FormsModule,
     BrowserModule,
     RouterModule.forRoot([
-      //{ path: '', component: HomeComponent, pathMatch: 'full' },
+     // { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: '', component: AllNewsPageComponent /*outlet: "allNews"*/},
       //{ path: 'fetch-data', component: FetchDataComponent },
       { path: 'oneNews', component: OneNewsPageComponent },
