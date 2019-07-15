@@ -1,11 +1,10 @@
-<h1>List of News</h1>
+
 <div class="blockNews" style="background-color:blanchedalmond; width: 100%; height:auto; ">
-  <ul *ngFor="let p of allNews" style="margin-bottom: 50px; background-color:burlywood;">
-    <li >
-      <h3>Header:</h3>
-      <a (click)='defineSelectedNews()' routerLink="/oneNews" id="{{p?.id}}">{{p?.header}}</a>
-      <h4>Text:</h4>
-      <p>{{p?.text}}</p>
+  <h1 style="margin-top:0px">List of News</h1>
+  <ul *ngFor="let news of allNews" style="margin-bottom: 50px; background-color:burlywood;">
+    <li style="font-size:30px">
+      <a (click)='defineSelectedNews(news?.id)' routerLink="/oneNews/:id" id="{{news?.id}} ">{{news?.header}}</a>
+      <p style="font-size:20px">{{news?.text}}</p>
     </li>
   </ul>
 </div>

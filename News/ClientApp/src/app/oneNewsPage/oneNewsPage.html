@@ -1,5 +1,47 @@
-<h1>Selected news</h1>
+<div style="background-color:blanchedalmond; width:100%; height:1000px">
+  <div style="margin-bottom: 100px">
+    <h1 style="margin-top:0px">Selected news</h1>
+    <h3>HEADER News  :  {{ oneNewsHeader }}</h3>
+    <h3>TEXT News  :  {{ oneNewsText }}</h3>
+  </div>
 
-<h4>TEXT News  =  {{ oneNewsId }}</h4>
-<h4>TEXT News  =  {{ oneNewsHeader }}</h4>
-<h4>TEXT News  =  {{ oneNewsText }}</h4>
+  <div style="display:flex;  flex-direction: column;">
+    <button (click)="SendCategories()" style="width:100px; height:50px; font-size:22px;">Submit</button>
+    <div style="margin-top: 50px">
+      <h4>Type of news:</h4>
+      <div style="margin-bottom: 20px">
+        <input [ngModel]="inputNewsType" style="width: 200px; height: 35px; padding-top: 14px; font-size: 20px;" disabled>
+        <button (click)="toggleNewsTypes()" style="width:35px; height: 35px; font-size: 25px;">
+          {{buttonNewsTypes}}
+        </button>
+      </div>
+      <h4>Region:</h4>
+      <div>
+        <input [ngModel]="inputNewsRegion" style="width: 200px; height: 35px; padding-top: 14px; font-size: 20px;" disabled>
+        <button (click)="toggleNewsRegions()" style="width:35px; height: 35px; font-size: 25px;">
+          {{buttonNewsRegions}}
+        </button>
+      </div>
+
+      <ng-container *ngIf="showNewsTypes">
+        <div style="text-align: left;">
+          <ul *ngFor="let type of newsTypes" style="margin-bottom: 50px; ">
+            <li style="font-size:30px">
+              <a (click)='clickNewsType(type.nameNewsType)' id="{{type.id}}">{{type.nameNewsType}}</a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="showNewsRegions">
+        <div style="text-align: left;">
+          <ul *ngFor="let type of newsRegions" style="margin-bottom: 50px; ">
+            <li style="font-size:30px">
+              <a (click)='clickNewsRegion(type.nameNewsRegion)' id="{{type.id}}">{{type.nameNewsRegion}}</a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
-import { NewsModel } from './interface/newsModel';
+import { NewsModel } from './models/newsModel';
 import { Router } from '@angular/router';
 
 @Component({

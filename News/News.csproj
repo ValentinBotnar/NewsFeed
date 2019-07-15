@@ -21,13 +21,20 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\app\interface\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\app\interface\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\src\app\interface\**" />
+    <None Remove="ClientApp\src\app\interface\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="ClientApp\src\app\allNewsPage\allNewsPage.component.ts" />
-    <None Remove="ClientApp\src\app\data.service.ts" />
+    <None Remove="ClientApp\src\app\models\newsRegionModel.ts" />
     <None Remove="ClientApp\src\app\newsModel.ts" />
     <None Remove="ClientApp\src\app\oneNewsPage\oneNewsPage.component.ts" />
     <None Remove="ClientApp\src\app\SignalRService.ts" />
@@ -35,10 +42,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\allNewsPage\allNewsPage.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\data.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\interface\newsModel.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\newsRegionModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\oneNewsPage\oneNewsPage.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\signalr\SignalRService.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

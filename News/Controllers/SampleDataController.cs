@@ -3,42 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using News.Model;
 
 namespace News.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private ApplicationContext _context;
 
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public SampleDataController(ApplicationContext context)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+            _context = context;
+        }
+        
+        [HttpGet("[action]")]
+        public IActionResult SendAllNewsFromDB()
+        {
+            return Ok(_context.Notifications.ToList());
+       
         }
 
-        public class WeatherForecast
+        [HttpPost("[action]")]
+        public IActionResult GetOneNewsById([FromBody]Notification idOneNewsObject)
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
+           
+            return Ok(_context.Notifications.FirstOrDefault(c => c.Id == idOneNewsObject.Id));
 
-            public int TemperatureF
-            {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
-            }
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetNewsTypes()
+        {
+            return Ok(_context.NewsTypes.ToList());
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult GetNewsRegions()
+        {
+            return Ok(_context.NewsRegions.ToList());
+        }
+
+        [HttpPost("[action]")]  
+        public IActionResult GetCategoriesFromClient([FromBody]int[] categoriesFromInput)
+        {
+            _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdType = categoriesFromInput[1];
+            _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdRegion = categoriesFromInput[2];
+
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }

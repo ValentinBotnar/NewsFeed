@@ -1,54 +1,53 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, NgModule, Pipe, Inject } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
-import { NewsModel } from '../interface/newsModel';
+import { NewsModel } from '../models/newsModel';
 import { OneNewsPageComponent } from '../oneNewsPage/oneNewsPage.component';
 import { Router } from '@angular/router';
-import { DataService } from '../data.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'AllNews',
   templateUrl: './AllNewsPage.html'
 })
 
+  @Pipe({
+    name: 'truncate'
+  })
+
 export class AllNewsPageComponent implements OnInit {
   title = 'AllNews';
   allNews: NewsModel[] = [];
+  allNewsr: NewsModel = null;
+  oneNews: NewsModel = null;
   public hubConnection: signalR.HubConnection;
   private SelectedNewsLocalStorage: string;
-  public id: number;
+  public idSelectedNews: number;
 
-
-  defineSelectedNews() {
-    var target = event.target || event.srcElement || event.currentTarget;
-    var idAttr = target.attributes.id;
-    var value = idAttr.nodeValue;
-    this.id = value;
-
-    // Search selected news and push it in local storage
-    for (let item of this.allNews) {
-      if (item.id == this.id) {
-        this.data.defineIdSelectedNews(JSON.stringify(item));
-        localStorage.setItem(this.SelectedNewsLocalStorage, JSON.stringify(item));
-      }
-    }
-  }
- 
-  constructor(private router: Router, private data: DataService) {
+  // Add seleted news's id in URL
+  defineSelectedNews(idNews: number) {  
+    this.router.navigate(['oneNews'], { queryParams: { idNews: idNews } });
   }
   
+  constructor(private router: Router, private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    // Message from server with all news from DB
+    this.http.get<NewsModel[]>(baseUrl + 'api/SampleData/SendAllNewsFromDB' /*{ responseType: 'text' }*/).subscribe(result => {
+      this.allNews = result;
+       // All new news will be show on the top
+      this.allNews.reverse(); 
+    }, err => {
+      console.log(err);
+      // check error status code is 500, if so, do some action
+    });
+  };
+
+
   ngOnInit() {
     let builder = new signalR.HubConnectionBuilder();
 
     // Connect to server to ConsumeScopedService class
     this.hubConnection = builder.withUrl('/ConsumeScopedService').build();
-
+      
     // Message from server with all news from DB
-    this.hubConnection.on("ReceiveMessageAllNews", (list) => {
-
-      this.allNews = list;
-      // All new news will be show on the top
-      this.allNews.reverse(); 
-    });
 
     // Message from server with one new news
     this.hubConnection.on("ReceiveMessage", (id, header, text) => {

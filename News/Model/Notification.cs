@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,10 @@ namespace News.Model
         public string Header { get; set; }
         public string Text { get; set; }
 
+        public int? IdType { get; set; }
+        [ForeignKey("IdRegion")]
+        public int? IdRegion { get; set; }
+        public NewsRegion NewsRegion { get; set; }
         private const string chars = "abcdefg hijklmn opqrs tuvwxyz ";
 
 
