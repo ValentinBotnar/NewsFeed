@@ -14,8 +14,8 @@ namespace News.Model
         public string Text { get; set; }
 
         public int? IdType { get; set; }
-        [ForeignKey("IdRegion")]
         public int? IdRegion { get; set; }
+
         public NewsRegion NewsRegion { get; set; }
         private const string chars = "abcdefg hijklmn opqrs tuvwxyz ";
 

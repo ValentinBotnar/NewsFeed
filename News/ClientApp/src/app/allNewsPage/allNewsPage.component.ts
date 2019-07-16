@@ -50,9 +50,9 @@ export class AllNewsPageComponent implements OnInit {
     // Message from server with all news from DB
 
     // Message from server with one new news
-    this.hubConnection.on("ReceiveMessage", (id, header, text) => {
+    this.hubConnection.on("ReceiveMessage", (id, header, text, idType, idRegion) => {
       // Add new news on the top
-      this.allNews.unshift(new NewsModel(id, header, text)); 
+      this.allNews.unshift(new NewsModel(id, header, text, idType, idRegion)); 
     });
 
     this.hubConnection.start();

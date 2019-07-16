@@ -28,15 +28,10 @@ export class OneNewsPageComponent implements OnInit {
 
   ngOnInit() { }
 
+
   constructor(private route: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
 
-    this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null);
-
-    this.http.post<NewsModel>(baseUrl + 'api/SampleData/GetOneNewsById', this.idOneNewsObject)
-      .subscribe(
-        (data: NewsModel) => { this.oneNewsHeader = data.header; this.oneNewsText = data.text; },
-        error => console.log(error)
-      );
+    this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null);
 
     // get list of news's types from server BD
     this.http.get<NewsTypeModel[]>(baseUrl + 'api/SampleData/GetNewsTypes').subscribe(result => {
@@ -54,7 +49,30 @@ export class OneNewsPageComponent implements OnInit {
       console.log(err);
       // check error status code is 500, if so, do some action
     });
+
+    this.http.post<NewsModel>(baseUrl + 'api/SampleData/GetOneNewsById', this.idOneNewsObject)
+      .subscribe(
+        (data: NewsModel) => {
+          this.oneNewsHeader = data.header; this.oneNewsText = data.text;
+
+          for (var i = 0, len = this.newsTypes.length; i < len; i++) {
+            if (this.newsTypes[i].id == data.idType) {
+              this.inputNewsType = this.newsTypes[i].nameNewsType;
+
+            }
+          }
+          for (var i = 0, len = this.newsRegions.length; i < len; i++) {
+            if (this.newsRegions[i].id == data.idRegion) {
+              this.inputNewsRegion = this.newsRegions[i].nameNewsRegion;
+            }
+          }
+        },
+        error => console.log(error)
+      );
+
+    
   }
+
 
   toggleNewsTypes() {
     this.showNewsTypes = !this.showNewsTypes;
@@ -91,7 +109,7 @@ export class OneNewsPageComponent implements OnInit {
   }
 
   SendCategories() {
-    if (this.inputNewsType != null && this.inputNewsRegion != null) {
+    //if (this.inputNewsType != null && this.inputNewsRegion != null) {
       var idInputNewsType;
       var idInputNewsRegion;  
 
@@ -105,10 +123,14 @@ export class OneNewsPageComponent implements OnInit {
           idInputNewsRegion = news.id;
       })
 
+    if (idInputNewsType == null)
+      idInputNewsType = 0;
+    if (idInputNewsRegion == null)
+      idInputNewsRegion = 0;
+
       var SelectedNewsCategories: number[] = [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion];
-      console.log(SelectedNewsCategories);  
       this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient', SelectedNewsCategories)
         .subscribe();
-    }
+    //}
   }
 }

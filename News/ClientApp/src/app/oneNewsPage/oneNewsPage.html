@@ -5,7 +5,7 @@
     <h3>TEXT News  :  {{ oneNewsText }}</h3>
   </div>
 
-  <div style="display:flex;  flex-direction: column;">
+  <div style="display:flex;  flex-direction: column; width: 45%">
     <button (click)="SendCategories()" style="width:100px; height:50px; font-size:22px;">Submit</button>
     <div style="margin-top: 50px">
       <h4>Type of news:</h4>
@@ -21,23 +21,23 @@
         <button (click)="toggleNewsRegions()" style="width:35px; height: 35px; font-size: 25px;">
           {{buttonNewsRegions}}
         </button>
-      </div>
+      </div>  
 
-      <ng-container *ngIf="showNewsTypes">
-        <div style="text-align: left;">
+      <ng-container *ngIf="showNewsTypes" style="width: 45%; margin-left: 50%">
+        <div style="text-align: left; margin-left: 80%; margin-top: -40%;  border: 2px solid brown; width: 60%;">
           <ul *ngFor="let type of newsTypes" style="margin-bottom: 50px; ">
-            <li style="font-size:30px">
-              <a (click)='clickNewsType(type.nameNewsType)' id="{{type.id}}">{{type.nameNewsType}}</a>
+            <li style="font-size:30px; list-style-type: none;">
+              <a  (click)='clickNewsType(type.nameNewsType)' id="{{type.id}}" style="color: black; cursor: pointer">{{type.nameNewsType}}</a>
             </li>
           </ul>
         </div>
       </ng-container>
 
       <ng-container *ngIf="showNewsRegions">
-        <div style="text-align: left;">
+        <div style="text-align: left; margin-left: 80%; margin-top: -40%; border: 2px solid brown; width: 60%">
           <ul *ngFor="let type of newsRegions" style="margin-bottom: 50px; ">
-            <li style="font-size:30px">
-              <a (click)='clickNewsRegion(type.nameNewsRegion)' id="{{type.id}}">{{type.nameNewsRegion}}</a>
+            <li style="font-size:30px; list-style-type: none;">
+              <a (click)='clickNewsRegion(type.nameNewsRegion)' id="{{type.id}}" style="color: black; cursor: pointer">{{type.nameNewsRegion}}</a>
             </li>
           </ul>
         </div>
