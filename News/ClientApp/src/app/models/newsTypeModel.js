@@ -5,6 +5,14 @@ var NewsTypeModel = /** @class */ (function () {
         this.id = _id,
             this.nameNewsType = _nameNewsType;
     }
+    NewsTypeModel.searchTypeId = function (newsTypes, inputNewsType) {
+        var id;
+        newsTypes.forEach(function (region) {
+            if (region.nameNewsType == inputNewsType)
+                id = region.id;
+        });
+        return id;
+    };
     return NewsTypeModel;
 }());
 exports.NewsTypeModel = NewsTypeModel;

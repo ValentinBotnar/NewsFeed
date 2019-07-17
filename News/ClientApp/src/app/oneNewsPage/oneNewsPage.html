@@ -21,23 +21,33 @@
         <button (click)="toggleNewsRegions()" style="width:35px; height: 35px; font-size: 25px;">
           {{buttonNewsRegions}}
         </button>
-      </div>  
+      </div>
 
       <ng-container *ngIf="showNewsTypes" style="width: 45%; margin-left: 50%">
         <div style="text-align: left; margin-left: 80%; margin-top: -40%;  border: 2px solid brown; width: 60%;">
           <ul *ngFor="let type of newsTypes" style="margin-bottom: 50px; ">
             <li style="font-size:30px; list-style-type: none;">
-              <a  (click)='clickNewsType(type.nameNewsType)' id="{{type.id}}" style="color: black; cursor: pointer">{{type.nameNewsType}}</a>
+              <a (click)='clickNewsType(type.nameNewsType, type.id)' id="{{type.id}}" style="color: black; cursor: pointer">{{type.nameNewsType}}</a>
             </li>
           </ul>
         </div>
       </ng-container>
 
       <ng-container *ngIf="showNewsRegions">
-        <div style="text-align: left; margin-left: 80%; margin-top: -40%; border: 2px solid brown; width: 60%">
+        <div style="text-align: left; margin-left: 100px; margin-top: -40%; border: 2px solid brown; width: 60%">
           <ul *ngFor="let type of newsRegions" style="margin-bottom: 50px; ">
             <li style="font-size:30px; list-style-type: none;">
               <a (click)='clickNewsRegion(type.nameNewsRegion)' id="{{type.id}}" style="color: black; cursor: pointer">{{type.nameNewsRegion}}</a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="showNewsTypesKinds">
+        <div style="text-align: left; margin-left: 500px; margin-top: -40%; border: 2px solid brown; width: 60%">
+          <ul *ngFor="let kind of newsTypesKindSelectedType" style="margin-bottom: 50px; ">
+            <li style="font-size:30px; list-style-type: none;">
+              <a (click)='c' id="{{kind.id}}" style="color: black; cursor: pointer">{{kind.nameKind}}</a>
             </li>
           </ul>
         </div>

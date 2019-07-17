@@ -18,22 +18,25 @@ export class OneNewsPageComponent implements OnInit {
   oneNewsHeader: string;
   oneNewsText: string;
   idOneNewsObject: NewsModel;
-  showNewsTypes: boolean = false;
-  showNewsRegions: boolean = false;
+  
   newsTypes: NewsTypeModel[] = [];
   newsTypesKind: NewsTypesKind[] = [];
+  newsTypesKindSelectedType: NewsTypesKind[] = [];
   newsRegions: NewsRegionModel[] = [];
+  showNewsTypes: boolean = false;
+  showNewsRegions: boolean = false;
+  showNewsTypesKinds: boolean = false;
   buttonNewsTypes: any = '>';
   buttonNewsRegions: any = '>';
   inputNewsType: string;
   inputNewsRegion: string;
 
-  ngOnInit() { }0
-
+  ngOnInit() { }
 
   constructor(private route: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
 
-    this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null);
+    // send news's id to get all data about this news
+    this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null, null);
 
     // get oneSeletedNews and list of news types, types kind and regions
     this.http.post<JSON>(baseUrl + 'api/SampleData/GetInfoNewsCategories', this.idOneNewsObject).subscribe(result => {
@@ -84,33 +87,27 @@ export class OneNewsPageComponent implements OnInit {
       this.buttonNewsRegions = ">";
   }
 
-  clickNewsType(nameNews: string) {
+  clickNewsType(nameNews: string, typeId: number) {/////////////////////////////////////////
     this.inputNewsType = nameNews;
-    this.toggleNewsTypes();
+   
+
+    this.newsTypesKindSelectedType = NewsTypesKind.searchTypesKind(this.newsTypesKind, typeId);
+    if (this.newsTypesKindSelectedType != null)
+      this.showNewsTypesKinds = !this.showNewsTypesKinds;
+    else
+      this.toggleNewsTypes();
   }
 
   clickNewsRegion(nameNews: string) {
     this.inputNewsRegion = nameNews;
     this.toggleNewsRegions();
   }
-
+    
   SendCategories() {
-    //if (this.inputNewsType != null && this.inputNewsRegion != null) {
-      var idInputNewsType;
-      var idInputNewsRegion;  
-
-      this.newsTypes.forEach((news) => {
-        if (news.nameNewsType == this.inputNewsType)
-          idInputNewsType = news.id;
-      })
-
-      this.newsRegions.forEach((news) => {
-        if (news.nameNewsRegion == this.inputNewsRegion)
-          idInputNewsRegion = news.id;
-      })
-
-      var SelectedNewsCategories: number[] = [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion];
-      this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient', SelectedNewsCategories)
-        .subscribe();
+    var idInputNewsRegion = NewsRegionModel.searchRegionId(this.newsRegions, this.inputNewsRegion);
+    var idInputNewsType = NewsTypeModel.searchTypeId(this.newsTypes, this.inputNewsType);
+   
+      this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient',
+      [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion]).subscribe();
   }
 }

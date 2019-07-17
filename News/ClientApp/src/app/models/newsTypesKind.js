@@ -6,6 +6,15 @@ var NewsTypesKind = /** @class */ (function () {
             this.nameKind = _nameKind,
             this.idNewsType = _idNewsType;
     }
+    NewsTypesKind.searchTypesKind = function (newsTypesKind, typeId) {
+        var list = [];
+        newsTypesKind.forEach(function (type) {
+            if (type.idNewsType == typeId) {
+                list.push(type);
+            }
+        });
+        return list;
+    };
     return NewsTypesKind;
 }());
 exports.NewsTypesKind = NewsTypesKind;

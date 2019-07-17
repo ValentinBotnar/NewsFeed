@@ -40,7 +40,6 @@ export class AllNewsPageComponent implements OnInit {
     });
   };
 
-
   ngOnInit() {
     let builder = new signalR.HubConnectionBuilder();
 
@@ -50,9 +49,9 @@ export class AllNewsPageComponent implements OnInit {
     // Message from server with all news from DB
 
     // Message from server with one new news
-    this.hubConnection.on("ReceiveMessage", (id, header, text, idType, idRegion) => {
+    this.hubConnection.on("ReceiveMessage", (id, header, text, idType, idRegion, idTypesKind) => {
       // Add new news on the top
-      this.allNews.unshift(new NewsModel(id, header, text, idType, idRegion)); 
+      this.allNews.unshift(new NewsModel(id, header, text, idType, idRegion, idTypesKind)); 
     });
 
     this.hubConnection.start();

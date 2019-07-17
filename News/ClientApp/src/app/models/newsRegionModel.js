@@ -5,6 +5,14 @@ var NewsRegionModel = /** @class */ (function () {
         this.id = _id,
             this.nameNewsRegion = _nameNewsRegion;
     }
+    NewsRegionModel.searchRegionId = function (newsRegions, inputNewsRegion) {
+        var id;
+        newsRegions.forEach(function (region) {
+            if (region.nameNewsRegion == inputNewsRegion)
+                id = region.id;
+        });
+        return id;
+    };
     return NewsRegionModel;
 }());
 exports.NewsRegionModel = NewsRegionModel;
