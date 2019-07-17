@@ -12,6 +12,7 @@ namespace News.Model
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<NewsType> NewsTypes { get; set; }
         public DbSet<NewsRegion> NewsRegions { get; set; }
+        public DbSet<NewsTypesKind> NewsTypesKinds { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

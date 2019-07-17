@@ -46,12 +46,10 @@ namespace News.Controllers
         }
 
         [HttpPost("[action]")]  
-        public IActionResult GetCategoriesFromClient([FromBody]int[] categoriesFromInput)
+        public IActionResult GetCategoriesFromClient([FromBody]int?[] categoriesFromInput)
         {
-            if(categoriesFromInput[1] != 0)
             _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdType = categoriesFromInput[1];
-            if (categoriesFromInput[2] != 0)
-                _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdRegion = categoriesFromInput[2];
+            _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdRegion = categoriesFromInput[2];
 
             _context.SaveChanges();
             return Ok();

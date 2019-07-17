@@ -41,7 +41,6 @@ export class OneNewsPageComponent implements OnInit {
       // check error status code is 500, if so, do some action
     });
 
-
     // get list of news's regions from server BD
     this.http.get<NewsRegionModel[]>(baseUrl + 'api/SampleData/GetNewsRegions').subscribe(result => {
       this.newsRegions = result;
@@ -69,15 +68,12 @@ export class OneNewsPageComponent implements OnInit {
         },
         error => console.log(error)
       );
-
-    
   }
-
 
   toggleNewsTypes() {
     this.showNewsTypes = !this.showNewsTypes;
 
-    if (this.buttonNewsRegions == "<")///////////////////////
+    if (this.buttonNewsRegions == "<")
       this.toggleNewsRegions();
 
     if (this.showNewsTypes)
@@ -89,7 +85,7 @@ export class OneNewsPageComponent implements OnInit {
   toggleNewsRegions() {
     this.showNewsRegions = !this.showNewsRegions;
 
-    if (this.buttonNewsTypes == "<")/////////////////////////////
+    if (this.buttonNewsTypes == "<")
       this.toggleNewsTypes();
 
     if (this.showNewsRegions)
@@ -123,14 +119,8 @@ export class OneNewsPageComponent implements OnInit {
           idInputNewsRegion = news.id;
       })
 
-    if (idInputNewsType == null)
-      idInputNewsType = 0;
-    if (idInputNewsRegion == null)
-      idInputNewsRegion = 0;
-
       var SelectedNewsCategories: number[] = [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion];
       this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient', SelectedNewsCategories)
         .subscribe();
-    //}
   }
 }
