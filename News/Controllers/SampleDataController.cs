@@ -24,7 +24,7 @@ namespace News.Controllers
             return Ok(_context.Notifications.ToList());
        
         }
-
+ 
         [HttpPost("[action]")]
         public IActionResult GetOneNewsById([FromBody]Notification idOneNewsObject)
         {
@@ -33,16 +33,14 @@ namespace News.Controllers
 
         }
 
-        [HttpGet("[action]")]
-        public IActionResult GetNewsTypes()
+        [HttpPost("[action]")]
+        public IActionResult GetInfoNewsCategories([FromBody]Notification idOneNewsObject)
         {
-            return Ok(_context.NewsTypes.ToList());
-        }
-
-        [HttpGet("[action]")]
-        public IActionResult GetNewsRegions()
-        {
-            return Ok(_context.NewsRegions.ToList());
+            var listNewsTypes = _context.NewsTypes.ToList();
+            var listNewsRegions = _context.NewsRegions.ToList();
+            var listNewsTypesKind = _context.NewsTypesKinds.ToList();
+            var objectSelectedNews = _context.Notifications.FirstOrDefault(c => c.Id == idOneNewsObject.Id);
+            return Json(new { listNewsTypes, listNewsRegions, listNewsTypesKind, objectSelectedNews });
         }
 
         [HttpPost("[action]")]  

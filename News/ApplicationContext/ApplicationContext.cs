@@ -19,13 +19,13 @@ namespace News.Model
         {
             //Database.EnsureCreated();
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Notification>()
-                .HasOne(p => p.NewsRegion)
-                .WithMany(t => t.Notifications)
-                .HasForeignKey(p => p.IdRegion)
-                .HasPrincipalKey(t => t.Id);
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Notification>()
+        //        .HasOne(p => p.NewsRegion)
+        //        .WithMany(t => t.Notifications)
+        //        .HasForeignKey(p => p.IdRegion)
+        //        .HasPrincipalKey(t => t.Id);
+        //}
     }
 }

@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace News.Model
 {
-    public class NewsRegion
+    public class NewsTypesKind
     {
         public int Id { get; set; }
-        public string NameNewsRegion { get; set; }
+        public string nameKind { get; set; }
+        public int idNewsType { get; set; }
     }
 }

@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NewsTypeModel } from '../models/newsTypeModel';
 import { NewsRegionModel } from '../models/newsRegionModel';
 import { forEach } from '@angular/router/src/utils/collection';
+import { NewsTypesKind } from '../models/newsTypesKind';
 
 @Component({
   selector: 'onePage',
@@ -20,54 +21,43 @@ export class OneNewsPageComponent implements OnInit {
   showNewsTypes: boolean = false;
   showNewsRegions: boolean = false;
   newsTypes: NewsTypeModel[] = [];
+  newsTypesKind: NewsTypesKind[] = [];
   newsRegions: NewsRegionModel[] = [];
   buttonNewsTypes: any = '>';
   buttonNewsRegions: any = '>';
   inputNewsType: string;
   inputNewsRegion: string;
 
-  ngOnInit() { }
+  ngOnInit() { }0
 
 
   constructor(private route: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
 
     this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null);
 
-    // get list of news's types from server BD
-    this.http.get<NewsTypeModel[]>(baseUrl + 'api/SampleData/GetNewsTypes').subscribe(result => {
-      this.newsTypes = result;
-    }, err => {
+    // get oneSeletedNews and list of news types, types kind and regions
+    this.http.post<JSON>(baseUrl + 'api/SampleData/GetInfoNewsCategories', this.idOneNewsObject).subscribe(result => {
+      this.newsTypes = result["listNewsTypes"];
+      this.newsRegions = result["listNewsRegions"];
+      this.newsTypesKind = result["listNewsTypesKind"];
+
+      this.oneNewsHeader = result["objectSelectedNews"].header;
+      this.oneNewsText = result["objectSelectedNews"].text;
+
+      for (var i = 0, len = this.newsTypes.length; i < len; i++) {
+        if (this.newsTypes[i].id == result["objectSelectedNews"].idType) {
+          this.inputNewsType = this.newsTypes[i].nameNewsType;
+        }
+      }
+      for (var j = 0, len = this.newsRegions.length; j < len; j++) {
+        if (this.newsRegions[j].id == result["objectSelectedNews"].idRegion) {
+          this.inputNewsRegion = this.newsRegions[j].nameNewsRegion;
+        }
+      }
+    }, err => { 
       console.log(err);
       // check error status code is 500, if so, do some action
     });
-
-    // get list of news's regions from server BD
-    this.http.get<NewsRegionModel[]>(baseUrl + 'api/SampleData/GetNewsRegions').subscribe(result => {
-      this.newsRegions = result;
-    }, err => {
-      console.log(err);
-      // check error status code is 500, if so, do some action
-    });
-
-    this.http.post<NewsModel>(baseUrl + 'api/SampleData/GetOneNewsById', this.idOneNewsObject)
-      .subscribe(
-        (data: NewsModel) => {
-          this.oneNewsHeader = data.header; this.oneNewsText = data.text;
-
-          for (var i = 0, len = this.newsTypes.length; i < len; i++) {
-            if (this.newsTypes[i].id == data.idType) {
-              this.inputNewsType = this.newsTypes[i].nameNewsType;
-
-            }
-          }
-          for (var i = 0, len = this.newsRegions.length; i < len; i++) {
-            if (this.newsRegions[i].id == data.idRegion) {
-              this.inputNewsRegion = this.newsRegions[i].nameNewsRegion;
-            }
-          }
-        },
-        error => console.log(error)
-      );
   }
 
   toggleNewsTypes() {

@@ -15,8 +15,9 @@ namespace News.Model
 
         public int? IdType { get; set; }
         public int? IdRegion { get; set; }
+        public int? IdTypesKind { get; set; }
 
-        public NewsRegion NewsRegion { get; set; }
+        //public NewsRegion NewsRegion { get; set; }
         private const string chars = "abcdefg hijklmn opqrs tuvwxyz ";
 
 
