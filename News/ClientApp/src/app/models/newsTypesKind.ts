@@ -32,5 +32,14 @@ export class NewsTypesKind {
     })
     return id;
   }
+
+  public static searchNameKind(newTypesKinds: NewsTypesKind[], idNewsTypesKind: number) {
+    var name;
+    newTypesKinds.forEach((kind) => {
+      if (kind.id == idNewsTypesKind)
+        name = kind.nameKind;
+    })
+    return name;
+  }
 }
 

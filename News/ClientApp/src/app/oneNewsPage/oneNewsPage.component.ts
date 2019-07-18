@@ -49,23 +49,12 @@ export class OneNewsPageComponent implements OnInit {
       this.oneNewsHeader = result["objectSelectedNews"].header;
       this.oneNewsText = result["objectSelectedNews"].text;
 
-      for (var i = 0, len = this.newsTypes.length; i < len; i++) {
-        if (this.newsTypes[i].id == result["objectSelectedNews"].idType) {
-          this.inputNewsType = this.newsTypes[i].nameNewsType;
-        }
-      }
-      for (var j = 0, len = this.newsRegions.length; j < len; j++) {
-        if (this.newsRegions[j].id == result["objectSelectedNews"].idRegion) {
-          this.inputNewsRegion = this.newsRegions[j].nameNewsRegion;
-        }
-      }
-      if (result["objectSelectedNews"].idTypesKind != null) {
-        for (var k = 0, len = this.newsTypesKinds.length; k < len; k++) {
-          if (this.newsTypesKinds[k].id == result["objectSelectedNews"].idTypesKind) {
-            this.inputNewsType = this.newsTypesKinds[k].nameKind;
-          }
-        }
-      }
+      this.inputNewsType = NewsTypeModel.searchNameType(this.newsTypes, result["objectSelectedNews"].idType);
+
+      if (result["objectSelectedNews"].idTypesKind != null) 
+        this.inputNewsType = NewsTypesKind.searchNameKind(this.newsTypesKinds, result["objectSelectedNews"].idTypesKind);
+      else
+        this.inputNewsRegion = NewsRegionModel.searchNameRegion(this.newsRegions, result["objectSelectedNews"].idRegion);
     }, err => { 
       console.log(err);
       // check error status code is 500, if so, do some action
@@ -97,12 +86,8 @@ export class OneNewsPageComponent implements OnInit {
       this.buttonNewsRegions = "<";
     else
       this.buttonNewsRegions = ">";
-
-   
   }
-
-
-
+  
   clickNewsType(nameNews: string, typeId: number) {/////////////////////////////////////////
     this.inputNewsType = nameNews;
 
@@ -110,7 +95,6 @@ export class OneNewsPageComponent implements OnInit {
     if (this.newsTypesKindSelectedType != null) {
       this.isKindsMenuShow = true;
       this.showNewsTypesKinds = !this.showNewsTypesKinds;
-
     }
     else
       this.toggleNewsTypes();
@@ -137,8 +121,7 @@ export class OneNewsPageComponent implements OnInit {
 
     if (this.nameNewsTypesKind != null)
       idInputNewsTypesKind = NewsTypesKind.searchKindId(this.newsTypesKinds, this.nameNewsTypesKind);
-
-
+    
       this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient',
         [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion, idInputNewsTypesKind]).subscribe();
   }

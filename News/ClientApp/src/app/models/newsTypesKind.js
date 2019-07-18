@@ -23,6 +23,14 @@ var NewsTypesKind = /** @class */ (function () {
         });
         return id;
     };
+    NewsTypesKind.searchNameKind = function (newTypesKinds, idNewsTypesKind) {
+        var name;
+        newTypesKinds.forEach(function (kind) {
+            if (kind.id == idNewsTypesKind)
+                name = kind.nameKind;
+        });
+        return name;
+    };
     return NewsTypesKind;
 }());
 exports.NewsTypesKind = NewsTypesKind;

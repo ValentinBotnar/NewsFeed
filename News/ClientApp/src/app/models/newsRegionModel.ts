@@ -19,5 +19,14 @@ export class NewsRegionModel {
     })
     return id;
   }
+
+  public static searchNameRegion(newsRegions: NewsRegionModel[], idNewsRegion: number) {
+    var name;
+    newsRegions.forEach((region) => {
+      if (region.id == idNewsRegion) 
+        name = region.nameNewsRegion;
+    })
+    return name;
+  }
 }
 

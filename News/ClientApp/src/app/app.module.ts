@@ -10,7 +10,6 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { OneNewsPageComponent } from './oneNewsPage/oneNewsPage.component';
 import { AllNewsPageComponent } from './allNewsPage/allNewsPage.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

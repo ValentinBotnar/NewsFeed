@@ -13,6 +13,14 @@ var NewsRegionModel = /** @class */ (function () {
         });
         return id;
     };
+    NewsRegionModel.searchNameRegion = function (newsRegions, idNewsRegion) {
+        var name;
+        newsRegions.forEach(function (region) {
+            if (region.id == idNewsRegion)
+                name = region.nameNewsRegion;
+        });
+        return name;
+    };
     return NewsRegionModel;
 }());
 exports.NewsRegionModel = NewsRegionModel;
