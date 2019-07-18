@@ -38,7 +38,7 @@ namespace News.Hub
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 
                 Notification notice = new Notification() { Id = random.Next(), IsRead = false, Header = Notification.HeaderRandom(random, 10),
-                    Text = Notification.TextRandom(random, 100)};  
+                    Text = Notification.TextRandom(random, 400)};  
                 context.Notifications.Add(notice);
                 context.SaveChanges();
                 await _hubContext.Clients.All.SendAsync("ReceiveMessage", notice.Id, notice.Header, notice.Text);

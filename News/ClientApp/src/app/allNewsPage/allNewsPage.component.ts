@@ -7,11 +7,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'AllNews',
-  templateUrl: './AllNewsPage.html'
+  templateUrl: './AllNewsPage.html',
+  styleUrls: ['./allNewsPage.css']
 })
 
   @Pipe({
-    name: 'truncate'
+    name: 'truncate'  
   })
 
 export class AllNewsPageComponent implements OnInit {

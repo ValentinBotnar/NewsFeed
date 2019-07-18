@@ -11,7 +11,8 @@ import { NewsTypesKind } from '../models/newsTypesKind';
 
 @Component({
   selector: 'onePage',
-  templateUrl: './oneNewsPage.html'
+  templateUrl: './oneNewsPage.html',
+  styleUrls: ['./oneNewsPage.css']
 })
 
 export class OneNewsPageComponent implements OnInit {
