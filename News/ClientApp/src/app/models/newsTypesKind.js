@@ -6,7 +6,7 @@ var NewsTypesKind = /** @class */ (function () {
             this.nameKind = _nameKind,
             this.idNewsType = _idNewsType;
     }
-    NewsTypesKind.searchTypesKind = function (newsTypesKind, typeId) {
+    NewsTypesKind.searchAllTypesKind = function (newsTypesKind, typeId) {
         var list = [];
         newsTypesKind.forEach(function (type) {
             if (type.idNewsType == typeId) {
@@ -14,6 +14,14 @@ var NewsTypesKind = /** @class */ (function () {
             }
         });
         return list;
+    };
+    NewsTypesKind.searchKindId = function (newsTypesKind, inputNameKind) {
+        var id;
+        newsTypesKind.forEach(function (kind) {
+            if (kind.nameKind == inputNameKind)
+                id = kind.id;
+        });
+        return id;
     };
     return NewsTypesKind;
 }());

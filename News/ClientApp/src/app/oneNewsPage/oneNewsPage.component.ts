@@ -20,7 +20,7 @@ export class OneNewsPageComponent implements OnInit {
   idOneNewsObject: NewsModel;
   
   newsTypes: NewsTypeModel[] = [];
-  newsTypesKind: NewsTypesKind[] = [];
+  newsTypesKinds: NewsTypesKind[] = [];
   newsTypesKindSelectedType: NewsTypesKind[] = [];
   newsRegions: NewsRegionModel[] = [];
   showNewsTypes: boolean = false;
@@ -28,8 +28,10 @@ export class OneNewsPageComponent implements OnInit {
   showNewsTypesKinds: boolean = false;
   buttonNewsTypes: any = '>';
   buttonNewsRegions: any = '>';
+  isKindsMenuShow: boolean = false;
   inputNewsType: string;
   inputNewsRegion: string;
+  nameNewsTypesKind: string;
 
   ngOnInit() { }
 
@@ -42,7 +44,7 @@ export class OneNewsPageComponent implements OnInit {
     this.http.post<JSON>(baseUrl + 'api/SampleData/GetInfoNewsCategories', this.idOneNewsObject).subscribe(result => {
       this.newsTypes = result["listNewsTypes"];
       this.newsRegions = result["listNewsRegions"];
-      this.newsTypesKind = result["listNewsTypesKind"];
+      this.newsTypesKinds = result["listNewsTypesKind"];
 
       this.oneNewsHeader = result["objectSelectedNews"].header;
       this.oneNewsText = result["objectSelectedNews"].text;
@@ -55,6 +57,13 @@ export class OneNewsPageComponent implements OnInit {
       for (var j = 0, len = this.newsRegions.length; j < len; j++) {
         if (this.newsRegions[j].id == result["objectSelectedNews"].idRegion) {
           this.inputNewsRegion = this.newsRegions[j].nameNewsRegion;
+        }
+      }
+      if (result["objectSelectedNews"].idTypesKind != null) {
+        for (var k = 0, len = this.newsTypesKinds.length; k < len; k++) {
+          if (this.newsTypesKinds[k].id == result["objectSelectedNews"].idTypesKind) {
+            this.inputNewsType = this.newsTypesKinds[k].nameKind;
+          }
         }
       }
     }, err => { 
@@ -78,22 +87,31 @@ export class OneNewsPageComponent implements OnInit {
   toggleNewsRegions() {
     this.showNewsRegions = !this.showNewsRegions;
 
-    if (this.buttonNewsTypes == "<")
+    if (this.buttonNewsTypes == "<") {
       this.toggleNewsTypes();
+      if (this.isKindsMenuShow == true)
+        this.showNewsTypesKinds = !this.showNewsTypesKinds;
+    }
 
     if (this.showNewsRegions)
       this.buttonNewsRegions = "<";
     else
       this.buttonNewsRegions = ">";
+
+   
   }
+
+
 
   clickNewsType(nameNews: string, typeId: number) {/////////////////////////////////////////
     this.inputNewsType = nameNews;
-   
 
-    this.newsTypesKindSelectedType = NewsTypesKind.searchTypesKind(this.newsTypesKind, typeId);
-    if (this.newsTypesKindSelectedType != null)
+    this.newsTypesKindSelectedType = NewsTypesKind.searchAllTypesKind(this.newsTypesKinds, typeId);
+    if (this.newsTypesKindSelectedType != null) {
+      this.isKindsMenuShow = true;
       this.showNewsTypesKinds = !this.showNewsTypesKinds;
+
+    }
     else
       this.toggleNewsTypes();
   }
@@ -102,12 +120,26 @@ export class OneNewsPageComponent implements OnInit {
     this.inputNewsRegion = nameNews;
     this.toggleNewsRegions();
   }
-    
+
+  clickNewsTypesKind(nameTypesKind: string) {
+    this.inputNewsType = nameTypesKind;
+    this.nameNewsTypesKind = nameTypesKind;
+
+    this.showNewsTypesKinds = !this.showNewsTypesKinds;
+    this.toggleNewsTypes();
+    this.isKindsMenuShow = false;
+  }
+
   SendCategories() {
     var idInputNewsRegion = NewsRegionModel.searchRegionId(this.newsRegions, this.inputNewsRegion);
     var idInputNewsType = NewsTypeModel.searchTypeId(this.newsTypes, this.inputNewsType);
-   
+    var idInputNewsTypesKind;
+
+    if (this.nameNewsTypesKind != null)
+      idInputNewsTypesKind = NewsTypesKind.searchKindId(this.newsTypesKinds, this.nameNewsTypesKind);
+
+
       this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient',
-      [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion]).subscribe();
+        [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion, idInputNewsTypesKind]).subscribe();
   }
 }

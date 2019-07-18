@@ -14,7 +14,7 @@ export class NewsTypesKind {
     this.idNewsType = _idNewsType
   }
 
-  public static searchTypesKind(newsTypesKind: NewsTypesKind[], typeId: number) {
+  public static searchAllTypesKind(newsTypesKind: NewsTypesKind[], typeId: number) {
     var list: NewsTypesKind[] = [];
     newsTypesKind.forEach((type) => {
       if (type.idNewsType == typeId) {
@@ -22,6 +22,15 @@ export class NewsTypesKind {
       }
     })
     return list;
+  }
+
+  public static searchKindId(newsTypesKind: NewsTypesKind[], inputNameKind: string) {
+    var id;
+    newsTypesKind.forEach((kind) => {
+      if (kind.nameKind == inputNameKind)
+        id = kind.id;
+    })
+    return id;
   }
 }
 

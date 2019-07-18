@@ -48,6 +48,7 @@ namespace News.Controllers
         {
             _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdType = categoriesFromInput[1];
             _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdRegion = categoriesFromInput[2];
+            _context.Notifications.FirstOrDefault(c => c.Id == categoriesFromInput[0]).IdTypesKind = categoriesFromInput[3];
 
             _context.SaveChanges();
             return Ok();
