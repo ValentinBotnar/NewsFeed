@@ -34,15 +34,12 @@ export class OneNewsPageComponent implements OnInit {
   inputNewsRegion: string;
   nameNewsTypesKind: string;
 
-  ngOnInit() { }
-
-  constructor(private route: ActivatedRoute, private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-
+  ngOnInit() {
     // send news's id to get all data about this news
     this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null, null);
 
     // get oneSeletedNews and list of news types, types kind and regions
-    this.http.post<JSON>(baseUrl + 'api/SampleData/GetInfoNewsCategories', this.idOneNewsObject).subscribe(result => {
+    this.http.post<JSON>('https://localhost:44342/api/SampleData/GetInfoNewsCategories', this.idOneNewsObject).subscribe(result => {
       this.newsTypes = result["listNewsTypes"];
       this.newsRegions = result["listNewsRegions"];
       this.newsTypesKinds = result["listNewsTypesKind"];
@@ -52,17 +49,23 @@ export class OneNewsPageComponent implements OnInit {
 
       this.inputNewsType = NewsTypeModel.searchNameType(this.newsTypes, result["objectSelectedNews"].idType);
 
-      if (result["objectSelectedNews"].idTypesKind != null) 
+      if (result["objectSelectedNews"].idTypesKind != null)
         this.inputNewsType = NewsTypesKind.searchNameKind(this.newsTypesKinds, result["objectSelectedNews"].idTypesKind);
       else
         this.inputNewsRegion = NewsRegionModel.searchNameRegion(this.newsRegions, result["objectSelectedNews"].idRegion);
-    }, err => { 
+    }, err => {
       console.log(err);
       // check error status code is 500, if so, do some action
-    });
-  }
+    });}
+
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
   toggleNewsTypes() {
+    if (this.isKindsMenuShow) {
+      this.isKindsMenuShow = false;
+      this.showNewsTypesKinds = !this.showNewsTypesKinds;
+    }
+
     this.showNewsTypes = !this.showNewsTypes;
 
     if (this.buttonNewsRegions == "<")
@@ -77,11 +80,13 @@ export class OneNewsPageComponent implements OnInit {
   toggleNewsRegions() {
     this.showNewsRegions = !this.showNewsRegions;
 
-    if (this.buttonNewsTypes == "<") {
-      this.toggleNewsTypes();
-      if (this.isKindsMenuShow == true)
-        this.showNewsTypesKinds = !this.showNewsTypesKinds;
+    if (this.isKindsMenuShow) {
+      this.isKindsMenuShow = false;
+      this.showNewsTypesKinds = !this.showNewsTypesKinds;
     }
+
+    if (this.buttonNewsTypes == "<")
+      this.toggleNewsTypes();
 
     if (this.showNewsRegions)
       this.buttonNewsRegions = "<";
@@ -89,13 +94,15 @@ export class OneNewsPageComponent implements OnInit {
       this.buttonNewsRegions = ">";
   }
   
-  clickNewsType(nameNews: string, typeId: number) {/////////////////////////////////////////
+  clickNewsType(nameNews: string, typeId: number) {
     this.inputNewsType = nameNews;
 
     this.newsTypesKindSelectedType = NewsTypesKind.searchAllTypesKind(this.newsTypesKinds, typeId);
     if (this.newsTypesKindSelectedType != null) {
-      this.isKindsMenuShow = true;
-      this.showNewsTypesKinds = !this.showNewsTypesKinds;
+      if (!this.isKindsMenuShow) {
+        this.showNewsTypesKinds = !this.showNewsTypesKinds;
+        this.isKindsMenuShow = true;
+      }
     }
     else
       this.toggleNewsTypes();
@@ -111,8 +118,8 @@ export class OneNewsPageComponent implements OnInit {
     this.nameNewsTypesKind = nameTypesKind;
 
     this.showNewsTypesKinds = !this.showNewsTypesKinds;
-    this.toggleNewsTypes();
     this.isKindsMenuShow = false;
+    this.toggleNewsTypes(); 
   }
 
   SendCategories() {

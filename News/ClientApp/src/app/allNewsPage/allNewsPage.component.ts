@@ -29,19 +29,19 @@ export class AllNewsPageComponent implements OnInit {
     this.router.navigate(['oneNews'], { queryParams: { idNews: idNews } });
   }
   
-  constructor(private router: Router, private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private router: Router, private http: HttpClient) {}
+
+  ngOnInit() {
     // Message from server with all news from DB
-    this.http.get<NewsModel[]>(baseUrl + 'api/SampleData/SendAllNewsFromDB' /*{ responseType: 'text' }*/).subscribe(result => {
+    this.http.get<NewsModel[]>('https://localhost:44342/api/SampleData/SendAllNewsFromDB').subscribe(result => {
       this.allNews = result;
-       // All new news will be show on the top
-      this.allNews.reverse(); 
+      // All new news will be show on the top
+      this.allNews.reverse();
     }, err => {
       console.log(err);
       // check error status code is 500, if so, do some action
-    });
-  };
+      });
 
-  ngOnInit() {
     let builder = new signalR.HubConnectionBuilder();
 
     // Connect to server to ConsumeScopedService class

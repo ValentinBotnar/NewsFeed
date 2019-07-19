@@ -11,7 +11,7 @@
       <h4>Type of news:</h4>
       <div class="input-category">
         <input [ngModel]="inputNewsType" disabled>
-        <button (click)="toggleNewsTypes()" style="width:35px; height: 35px; font-size: 25px;">
+        <button (click)="toggleNewsTypes()">
           {{buttonNewsTypes}}
         </button>
       </div>
@@ -50,7 +50,7 @@
               <a (click)='clickNewsTypesKind(kind.nameKind)' id="{{kind.id}}">{{kind.nameKind}}</a>
             </li>
           </ul>
-        </div>
+        </div>  
       </ng-container>
     </div>
   </div>
