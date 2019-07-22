@@ -9,6 +9,8 @@ import { HomeComponent } from './home/home.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { OneNewsPageComponent } from './oneNewsPage/oneNewsPage.component';
 import { AllNewsPageComponent } from './allNewsPage/allNewsPage.component';
+import { HttpService } from './http.service';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,8 +26,10 @@ import { AllNewsPageComponent } from './allNewsPage/allNewsPage.component';
     HttpClientModule,
     FormsModule,
     BrowserModule,
+    //HttpClient,
+//    HttpService,
     RouterModule.forRoot([  
-      { path: '', component: AllNewsPageComponent /*outlet: "allNews"*/},
+      { path: '', component: AllNewsPageComponent },
       { path: 'oneNews', component: OneNewsPageComponent },
     ])
   ],

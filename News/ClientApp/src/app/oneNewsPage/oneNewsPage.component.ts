@@ -8,11 +8,13 @@ import { NewsTypeModel } from '../models/newsTypeModel';
 import { NewsRegionModel } from '../models/newsRegionModel';
 import { forEach } from '@angular/router/src/utils/collection';
 import { NewsTypesKind } from '../models/newsTypesKind';
+import { HttpService } from '../http.service';
 
 @Component({
   selector: 'onePage',
   templateUrl: './oneNewsPage.html',
-  styleUrls: ['./oneNewsPage.css']
+  styleUrls: ['./oneNewsPage.css'],
+  providers: [HttpService]
 })
 
 export class OneNewsPageComponent implements OnInit {
@@ -39,26 +41,26 @@ export class OneNewsPageComponent implements OnInit {
     this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null, null);
 
     // get oneSeletedNews and list of news types, types kind and regions
-    this.http.post<JSON>('https://localhost:44342/api/SampleData/GetInfoNewsCategories', this.idOneNewsObject).subscribe(result => {
+    this.httpService.getOneSeletedNews(this.idOneNewsObject).subscribe(result => {
       this.newsTypes = result["listNewsTypes"];
       this.newsRegions = result["listNewsRegions"];
       this.newsTypesKinds = result["listNewsTypesKind"];
-
       this.oneNewsHeader = result["objectSelectedNews"].header;
       this.oneNewsText = result["objectSelectedNews"].text;
-
       this.inputNewsType = NewsTypeModel.searchNameType(this.newsTypes, result["objectSelectedNews"].idType);
-
+      this.inputNewsRegion = NewsRegionModel.searchNameRegion(this.newsRegions, result["objectSelectedNews"].idRegion)
+      console.log(result);
+      console.log(result["objectSelectedNews"].idRegion);
       if (result["objectSelectedNews"].idTypesKind != null)
         this.inputNewsType = NewsTypesKind.searchNameKind(this.newsTypesKinds, result["objectSelectedNews"].idTypesKind);
       else
-        this.inputNewsRegion = NewsRegionModel.searchNameRegion(this.newsRegions, result["objectSelectedNews"].idRegion);
+        this.inputNewsType = NewsTypeModel.searchNameType(this.newsTypes, result["objectSelectedNews"].idType);
     }, err => {
       console.log(err);
       // check error status code is 500, if so, do some action
     });}
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+constructor(private route: ActivatedRoute, private http: HttpClient, private httpService: HttpService) {}
 
   toggleNewsTypes() {
     if (this.isKindsMenuShow) {
@@ -130,7 +132,8 @@ export class OneNewsPageComponent implements OnInit {
     if (this.nameNewsTypesKind != null)
       idInputNewsTypesKind = NewsTypesKind.searchKindId(this.newsTypesKinds, this.nameNewsTypesKind);
     
-      this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient',
-        [this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion, idInputNewsTypesKind]).subscribe();
+      //this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient',
+    this.httpService.sendCategories([this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion, idInputNewsTypesKind])
+      .subscribe();
   }
 }

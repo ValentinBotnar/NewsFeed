@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\allNewsPage\allNewsPage.component.ts" />
+    <None Remove="ClientApp\src\app\http.service.ts" />
     <None Remove="ClientApp\src\app\models\newsRegionModel.ts" />
     <None Remove="ClientApp\src\app\models\newsTypesKind.ts" />
     <None Remove="ClientApp\src\app\newsModel.ts" />
@@ -43,6 +44,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\allNewsPage\allNewsPage.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\http.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\newsRegionModel.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\models\newsTypesKind.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\oneNewsPage\oneNewsPage.component.ts" />
