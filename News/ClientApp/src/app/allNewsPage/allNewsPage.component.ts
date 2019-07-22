@@ -34,7 +34,6 @@ export class AllNewsPageComponent implements OnInit {
 
   ngOnInit() {
     // Message from server with all news from DB
-    ///////this.HttpService .http.get<NewsModel[]>('https://localhost:44342/api/SampleData/SendAllNewsFromDB').subscribe(result => {
     this.httpService.getAllNewsData().subscribe(result => {
       this.allNews = result;
       // All new news will be show on the top

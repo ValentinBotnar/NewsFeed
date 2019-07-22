@@ -26,8 +26,6 @@ import { HttpClient } from '@angular/common/http';
     HttpClientModule,
     FormsModule,
     BrowserModule,
-    //HttpClient,
-//    HttpService,
     RouterModule.forRoot([  
       { path: '', component: AllNewsPageComponent },
       { path: 'oneNews', component: OneNewsPageComponent },

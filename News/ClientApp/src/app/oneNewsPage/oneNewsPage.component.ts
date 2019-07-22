@@ -20,7 +20,6 @@ import { HttpService } from '../http.service';
 export class OneNewsPageComponent implements OnInit {
   oneNewsHeader: string;
   oneNewsText: string;
-  idOneNewsObject: NewsModel;
   
   newsTypes: NewsTypeModel[] = [];
   newsTypesKinds: NewsTypesKind[] = [];
@@ -37,16 +36,14 @@ export class OneNewsPageComponent implements OnInit {
   nameNewsTypesKind: string;
 
   ngOnInit() {
-    // send news's id to get all data about this news
-    this.idOneNewsObject = new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null, null);
-
     // get oneSeletedNews and list of news types, types kind and regions
-    this.httpService.getOneSeletedNews(this.idOneNewsObject).subscribe(result => {
+    // send news's id to get all data about this news
+    this.httpService.getOneSeletedNews(new NewsModel(this.route.snapshot.queryParams['idNews'], null, null, null, null, null)).subscribe(result => {
+      this.oneNewsHeader = result["objectSelectedNews"].header;
+      this.oneNewsText = result["objectSelectedNews"].text;
       this.newsTypes = result["listNewsTypes"];
       this.newsRegions = result["listNewsRegions"];
       this.newsTypesKinds = result["listNewsTypesKind"];
-      this.oneNewsHeader = result["objectSelectedNews"].header;
-      this.oneNewsText = result["objectSelectedNews"].text;
       this.inputNewsType = NewsTypeModel.searchNameType(this.newsTypes, result["objectSelectedNews"].idType);
       this.inputNewsRegion = NewsRegionModel.searchNameRegion(this.newsRegions, result["objectSelectedNews"].idRegion)
       console.log(result);
@@ -132,7 +129,6 @@ constructor(private route: ActivatedRoute, private http: HttpClient, private htt
     if (this.nameNewsTypesKind != null)
       idInputNewsTypesKind = NewsTypesKind.searchKindId(this.newsTypesKinds, this.nameNewsTypesKind);
     
-      //this.http.post<NewsModel>('https://localhost:44342/api/SampleData/GetCategoriesFromClient',
     this.httpService.sendCategories([this.route.snapshot.queryParams['idNews'], idInputNewsType, idInputNewsRegion, idInputNewsTypesKind])
       .subscribe();
   }
